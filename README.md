@@ -1,8 +1,6 @@
-**********************************
-*           Lame Chopper         *
-* Code by George 'Koki' Kokiadis *
-* https://github.com/georgekoki  *
-**********************************
+# Lame Chopper
+#### Code by George 'Koki' Kokiadis
+##### *https://github.com/georgekoki* 
 
 Welcome to lame chopper. This was a fun little programming challenge i put myself through to teach myself python.
 While the original algorithm was written in python, it was re-written in c++ because the python implementation was too damn slow.
