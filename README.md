@@ -18,6 +18,8 @@ The algorithm does the following:
 7. Stitch every line together
 8. Save it as an image file
 
+#### To get started, download the contents of lame-chopper-executable and consult the readme!
+
 It uses OpenCV 4.1.0 to extract image data and to save images. So if you plan on tweaking the code/compile it yourself you can
 download it for free here: https://opencv.org/
 
