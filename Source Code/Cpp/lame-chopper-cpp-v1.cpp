@@ -10,10 +10,17 @@
 	Please consult the readme
 */
 
-/* Last edit: 1:34PM 9 Jul 2019 */
+/* Last edit: 1:22AM 10 Jul 2019 */
+#define FOREGROUND_WHITE 15
+#define FOREGROUND_YELLOW 14
+#define FOREGROUND_CYAN 11
+#define FOREGROUND_RED 12
+#define FOREGROUND_DARKBLUE 3
+#define FOREGROUND_GREEN 10
 
 #include <opencv2/opencv.hpp>
 #include <stdlib.h>
+#include <Windows.h>
 
 using namespace cv;
 using namespace std;
@@ -84,55 +91,85 @@ int** getColumn(Mat frame) {
 	@return
 		Valid VideoCapture to read data from
 */
-VideoCapture initialize(int * step, string * output_filename) {
-	cout << "**********************************\n";
-	cout << "*           Lame Chopper         *\n";
-	cout << "* Code by George 'Koki' Kokiadis *\n";
-	cout << "* https://github.com/georgekoki  *\n";
-	cout << "**********************************\n\n";
-	cout << "Welcome to lame chopper. I really apologise for this terrifying command prompt.\n";
-	cout << "I will try my best to make your experience as painless as possible.\n";
-	cout << "If you have no idea what this program does, please consult the readme!\n\n";
-	cout << "Let's get started. Please provide me with the name of the file you would like to use.";
-	cout << "(Note: the file has to be in the same folder with the executable file";
-	cout << ", and you need to \ninclude the extension of the file (.mp4, .avi))\n";
+VideoCapture initialize(int* step, std::string * output_filename) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+	cout << "	**********************************\n";
+	cout << "	*";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
+	cout << "         Lame Chopper           ";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+	cout << "*\n";
+	cout << "	*";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_YELLOW);
+	cout << " Code by George 'Koki' Kokiadis ";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+	cout << "*\n";
+	cout << "	*";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_YELLOW);
+	cout << " https://github.com/georgekoki  ";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+	cout << "*\n";
+	cout << "	**********************************\n\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_CYAN);
+	cout << "	Welcome to lame chopper. I really apologise for this terrifying command prompt.\n";
+	cout << "	I will try my best to make your experience as painless as possible.\n";
+	cout << "	If you have no idea what this program does, please consult the readme!\n\n";
+	cout << "	Let's get started. Please provide me with the name of the file you would like to use.\n";
+	cout << "	(Note: the file has to be in the same folder with the executable file";
+	cout << ", and you need to \n	include the extension of the file (.mp4, .avi))\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
 	cout << "File = ";
 	String filename;
 	VideoCapture video, temp;
 	cin >> filename;
 	while (!video.open(filename)) {
-		cout << "File not found or filename was wrong.\nFile = ";
+		SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+		cout << "/!\\ File not found or filename was wrong.\n";
+		SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
+		cout << "File = ";
 		cin >> filename;
 	}
 	temp = video;
 	Mat image;
 	temp.read(image);
-	cout << "Found file " << filename << " successfully. Some info about your video:\n";
-	cout << "- Dimensions (wxh) = " << image.rows << "x" << image.cols << "\n";
-	cout << "- Frames per second = " << temp.get(CAP_PROP_FPS) << "\n";
-	cout << "- Total ammount of frames = " << temp.get(CAP_PROP_FRAME_COUNT) << "\n\n";
-	cout << "Given this information, how many frames would you like me to skip per column?\n";
-
+	SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+	cout << ">> Found file " << filename << " successfully. Some info about your video:\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_YELLOW);
+	cout << "	- Dimensions (wxh) = " << image.rows << "x" << image.cols << "\n";
+	cout << "	- Frames per second = " << temp.get(CAP_PROP_FPS) << "\n";
+	cout << "	- Total ammount of frames = " << temp.get(CAP_PROP_FRAME_COUNT) << "\n\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+	cout << ">> Given this information, how many frames would you like me to skip per column?\n";
 	char ans = 'n';
 	do {
 		do {
+			SetConsoleTextAttribute(hConsole, FOREGROUND_DARKBLUE);
+			cout << "(Careful: If you input something other than a number, i will freak out.)\n";
+			SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
 			cout << "Step = ";
 			cin >> *step;
-		} while (step < 0 || step > temp.get(CAP_PROP_FRAME_COUNT));
-		cout << "You have given a step of " << *step << "\n";
-		cout << "This means you will need to export " << floor(temp.get(CAP_PROP_FRAME_COUNT) / *step) << " columns in total\n";
-		cout << "Resulting in an image of size (wxh) " << image.rows << "x" << floor(temp.get(CAP_PROP_FRAME_COUNT) / *step) << "\n";
+		} while (*step < 0 || *step > temp.get(CAP_PROP_FRAME_COUNT));
+		SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+		cout << ">> You have given a step of " << *step << "\n";
+		SetConsoleTextAttribute(hConsole, FOREGROUND_YELLOW);
+		cout << "	This means you will need to export " << floor(temp.get(CAP_PROP_FRAME_COUNT) / *step) << " columns in total\n";
+		cout << "	Resulting in an image of size (wxh) " << image.rows << "x" << floor(temp.get(CAP_PROP_FRAME_COUNT) / *step) << "\n";
+		SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
 		cout << "Are you happy with that? (y/n): ";
 		cin >> ans;
 	} while (ans != 'y' && ans != 'Y');
-	cout << "Please pick the name of the file you want to generate\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+	cout << ">> Please pick the name of the file you want to generate\n";
 	do {
+		SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
 		cout << "Output file name = ";
 		cin >> *output_filename;
 		cout << "Are you happy with the filename " << *output_filename << "? (y/n): ";
 		cin >> ans;
 	} while (ans != 'y' && ans != 'Y');
-	cout << "Starting...\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+	cout << ">> Starting...\n";
 	return video;
 }
 
@@ -142,22 +179,31 @@ VideoCapture initialize(int * step, string * output_filename) {
 	@param
 		progress: % to print
 */
-void printProgressBar(float progress) {
+void printProgressBar(float progress, bool flag) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	int barWidth = 70;
-
+	SetConsoleTextAttribute(hConsole, FOREGROUND_YELLOW);
 	std::cout << "[";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_CYAN);
 	int pos = barWidth * progress;
 	for (int i = 0; i < barWidth; ++i) {
 		if (i < pos) std::cout << "#";
 		else if (i == pos) std::cout << "#";
 		else std::cout << " ";
 	}
-	std::cout << "] " << int(progress * 100.0) << " %\r";
-	std::cout.flush();
+	SetConsoleTextAttribute(hConsole, FOREGROUND_YELLOW);
+	std::cout << "] ";
 
+	SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
+	std::cout << int(progress * 100.0);
+	if (!flag)
+		std::cout << "%\r";
+	else
+		std::cout << "%\n";
 }
 
 int main() {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	int step;
 	string output_filename;
 	VideoCapture cap = initialize(&step, &output_filename);
@@ -170,17 +216,20 @@ int main() {
 
 	int image_rows = image.rows;
 	int count = 0;
-
-	while (cap.read(image)){
+	cout << ">> Processing your video...\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
+	while (cap.read(image)) {
 		image_vector.push_back(getColumn(image));
 		for (int i = 0; i < step; i++) {
 			cap.grab();
 		}
 		count++;
-		printProgressBar((float) count / (float) total_frames);
+		printProgressBar((float)count / (float)total_frames, false);
 	}
-	printProgressBar(1);
-	cout << "Processing done, rendering final image...\n";
+	printProgressBar(1, true);
+	SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+	cout << ">> Processing done, rendering final image...\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
 
 	Mat line_matrix(image_rows, image_vector.size(), CV_8UC3);
 	for (int row = 0; row < image_rows; row++) {
@@ -190,13 +239,15 @@ int main() {
 			}
 		}
 	}
-	
+
 	vector<int> compression_params;
 	compression_params.push_back(IMWRITE_PNG_COMPRESSION);
 	compression_params.push_back(9);
 	imwrite(output_filename + ".png", line_matrix, compression_params);
-	cout << "Rendering done! You can find your image in the folder this executable was in.\n";
-	cout << "Press enter to exit...";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+	cout << ">> Rendering done! You can find your image in the folder this executable was in.\n";
+	SetConsoleTextAttribute(hConsole, FOREGROUND_WHITE);
+	cout << "Press a key and enter to exit...";
 	char c;
 	cin >> c;
 	return 0;
