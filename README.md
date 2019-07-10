@@ -1,4 +1,4 @@
-# Lame Chopper
+# Lame Chopper 1.0
 #### Code by George 'Koki' Kokiadis
 ##### *https://github.com/georgekoki* 
 
@@ -6,7 +6,7 @@ Welcome to lame chopper. This was a fun little programming challenge i put mysel
 While the original algorithm was written in python, it was re-written in c++ because the python implementation was too damn slow.
 
 But what is lame chopper?
-Lame chopper takes any video you feed it, and turns it into a modern work of art.
+Lame chopper takes any video you feed it, and turns it into a modern artpiece.
 
 The algorithm does the following:
 1. Take the video you give it
@@ -22,6 +22,8 @@ The algorithm does the following:
 
 It uses OpenCV 4.1.0 to extract image data and to save images. So if you plan on tweaking the code/compile it yourself you can
 download it for free here: https://opencv.org/
+
+You can find the source code for python or C++ in their respective folders.
 
 If you have any questions, please send them to my email:
 georgekoki1999@gmail.com
